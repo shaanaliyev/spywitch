@@ -40,8 +40,8 @@
       <div class="content">
         <!-- Setup Page -->
         <div page="#setup" class="page">
-          <span class="title">Twitch Setup:</span>
-          <div class="page-section s-setup">
+          <span class="title">Twitch:</span>
+          <div class="page-section s-setup active" id="s-setup">
             <label for="clientId" class="alt-title">Twitch App Client ID:</label>
             <input type="password" name="clientId" id="clientId" placeholder="• • •" />
             <button id="clientIdBtn">Connect with Twitch</button>
@@ -49,6 +49,13 @@
               <input type="checkbox" id="rememberMe" />
               <span class="checkmark"></span> Remember me
             </label>
+          </div>
+          <div class="page-section s-account" id="s-account">
+            <div class="account">
+              <span>Connected With Twitch</span>
+              <span>Account: <b id="profile">sh2a</b></span>
+              <button id="revoke">Revoke Access</button>
+            </div>
           </div>
           <div class="page-section s-docs">
             <span>User guide for Twitch:</span>
@@ -106,5 +113,6 @@
     </main>
     <script src="./assets/layout.js"></script>
     <script src="./assets/setup.js"></script>
+    <script src="./assets/spy.js"></script>
   </body>
 </html>

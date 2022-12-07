@@ -26,6 +26,7 @@
   --d1: #474747;
   --d1w: #7e7e7e;
   --d2: #3d3d3d;
+  --d2w: #4b4b4b;
   --r1: #ff9998;
   --r2: #ff7070;
   --p1: #a970ff;
@@ -47,6 +48,12 @@ body {
   max-width: 1350px;
   overflow: hidden;
 }
+
+/* No Select */
+/* -webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none; */
 
 /* ---------------- */
 /* ---------------- */
@@ -189,6 +196,9 @@ body {
   gap: 0.5rem;
   overflow: hidden;
 }
+.page > .active {
+  display: flex;
+}
 .alt-title {
   width: 100%;
   color: var(--w2);
@@ -199,6 +209,10 @@ body {
   font-weight: normal;
 }
 /* Page: Setup */
+.s-setup {
+  display: none;
+  margin-bottom: 2rem;
+}
 .s-setup > input {
   flex: 5;
   outline: none;
@@ -240,13 +254,8 @@ body {
   display: block;
   position: relative;
   padding-left: 2rem;
-  margin-bottom: 1rem;
   cursor: pointer;
   font-size: 1rem;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 .checkbox input {
   position: absolute;
@@ -261,10 +270,10 @@ body {
   left: 10px;
   height: 15px;
   width: 15px;
-  background-color: var(--w1);
+  background-color: var(--d1w);
 }
 .checkbox:hover input ~ .checkmark {
-  background-color: var(--d1w);
+  background-color: var(--d1);
 }
 .checkbox input:checked ~ .checkmark {
   background-color: var(--p1);
@@ -287,6 +296,31 @@ body {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+/* Account */
+.s-account {
+  margin-bottom: 2rem;
+  display: none;
+}
+.account {
+  width: 100%;
+  background-color: #83ff9a;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.account > button {
+  cursor: pointer;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  background-color: var(--d2);
+  color: var(--w1);
+}
+.account > button:hover {
+  background-color: var(--d2w);
 }
 /*  */
 

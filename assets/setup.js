@@ -1,7 +1,7 @@
 // ------------------------------
 // Global state:
 let CID;
-var TKN;
+var TKN = localStorage.getItem('TKN');
 
 // ------------------------------
 // SETUP/ Connect With Twitch, ClientID:
@@ -10,14 +10,6 @@ document.getElementById('clientIdBtn').addEventListener('click', () => {
   const clientIdElement = document.getElementById('clientId');
   // is not empty:
   if (clientIdElement.value.length > 0) {
-    // remember me state:
-    if (document.getElementById('rememberMe').checked) {
-      // save to Local Storage:
-      localStorage.setItem('CID', clientIdElement.value);
-    } else {
-      // keep as variable:
-      CID = clientIdElement.value;
-    }
     // remove red line from input element:
     clientIdElement.classList.remove('error');
     // send request to Twitch to take token:
@@ -46,10 +38,14 @@ const handleToken = () => {
       if (window.opener.document.getElementById('rememberMe').checked) {
         // save to Local Storage:
         localStorage.setItem('TKN', token);
+        // also saving in TKN var (because we will be triggering checkSession directly from here):
+        window.opener.TKN = token;
       } else {
-        // keep as variable:
+        // save in variable:
         window.opener.TKN = token;
       }
+      // run checkSession to update UI and and get clientID:
+      window.opener.checkSession();
     }
     // close current chrome tab:
     window.close();
@@ -61,28 +57,58 @@ const handleToken = () => {
 window.addEventListener('load', handleToken);
 
 // ------------------------------
-// SPY/ Search Modes:
-let activeModeDesc = document.getElementById('default-mode-desc');
-let activeMode = 'auto';
-document.getElementById('s-search-mode').addEventListener('click', (event) => {
-  const radioElement = event.target;
-  if (radioElement.tagName === 'INPUT') {
-    const targetModeSelector = radioElement.getAttribute('id');
-    const targetModeDesc = document.querySelectorAll('small[mode="' + targetModeSelector + '"]')[0];
-    if (targetModeDesc) {
-      activeModeDesc && activeModeDesc.classList.remove('active');
-      targetModeDesc.classList.add('active');
-      activeModeDesc = targetModeDesc;
-      activeMode = targetModeSelector;
-    }
-    // syp textareas:
-    const spyElementsCollection = document.getElementById('s-spy').children;
-    if (targetModeSelector === 'manual') {
-      spyElementsCollection[2].classList.add('active');
-      spyElementsCollection[3].classList.add('active');
+// SETUP/ Session. Get ClientID:
+var checkSession = async () => {
+  // If token exists:
+  if (TKN) {
+    // send request to check token:
+    const response = await fetch('https://id.twitch.tv/oauth2/validate', {
+      headers: {
+        Authorization: 'OAuth ' + TKN,
+      },
+    });
+    const data = await response?.json();
+    // if token is valid:
+    if (data.client_id) {
+      // save CID in variable:
+      CID = data.client_id;
+      // UI/ set account name:
+      document.getElementById('profile').innerText = data.login;
+      // UI/ hide setup form:
+      document.getElementById('s-setup').classList.remove('active');
+      // UI/ show account info panel:
+      document.getElementById('s-account').classList.add('active');
     } else {
-      spyElementsCollection[2].classList.remove('active');
-      spyElementsCollection[3].classList.remove('active');
+      // Clear Saved Data:
+      localStorage.clear();
+      CID = undefined;
+      TKN = undefined;
+      location.reload();
     }
   }
+  // remove onload listener:
+  window.removeEventListener('load', checkSession);
+};
+// load handleToken function on page load:
+window.addEventListener('load', checkSession);
+
+// ------------------------------
+// SETUP/ Revoke Access:
+document.getElementById('revoke').addEventListener('click', () => {
+  // Clear Saved Data:
+  localStorage.clear();
+  CID = undefined;
+  TKN = undefined;
+  // required Setup Page elements:
+  const s_setup = document.getElementById('s-setup');
+  const s_account = document.getElementById('s-account');
+  const profile = document.getElementById('profile');
+  // UI/ remove account name:
+  profile.innerText = '';
+  // UI/ remove account info panel:
+  s_account.classList.remove('active');
+  // UI/ show setup form:
+  s_setup.classList.add('active');
+  // reload page :)
+  location.reload();
 });
