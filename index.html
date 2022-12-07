@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A witch living in Twitch" />
+    <meta name="keywords" content="spy, chat, chat-log, messages, twitch" />
+    <meta name="author" content="shaanaliyev" />
+    <title>SpyWitch</title>
+    <link rel="icon" type="image/x-icon" href="./assets/spywitch.png" />
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+  <body>
+    <!-- Head -->
+    <div class="head w">
+      <img src="./assets/spywitch.png" width="45" alt="spywitch" />
+      <h1>SpyWitch</h1>
+      <a target="_blank" href="https://github.com/shaanaliyev/spywitch">
+        <img src="./assets/github.png" alt="spywitch-github" width="25" />
+      </a>
+    </div>
+    <!-- Main -->
+    <main class="main w">
+      <div class="sidebar">
+        <!-- Statusbar -->
+        <div class="satusbar">
+          <span>Not Activated</span>
+          <div><span>Users: 0</span><span>Channels: 0</span></div>
+        </div>
+        <!-- Navbar -->
+        <div class="navbar" id="navbar">
+          <a href="#setup" id="setup">Setup</a>
+          <a href="#spy" id="spy">Spy</a>
+          <a href="#watch" id="watch">Watch</a>
+          <a href="#about" id="about">About</a>
+        </div>
+      </div>
+      <!-- Content -->
+      <div class="content">
+        <!-- Setup Page -->
+        <div page="#setup" class="page">
+          <span class="title">Twitch Setup:</span>
+          <div class="page-section s-setup">
+            <label for="clientId" class="alt-title">Twitch App Client ID:</label>
+            <input type="password" name="clientId" id="clientId" placeholder="• • •" />
+            <button id="clientIdBtn">Connect with Twitch</button>
+            <label class="checkbox">
+              <input type="checkbox" id="rememberMe" />
+              <span class="checkmark"></span> Remember me
+            </label>
+          </div>
+          <div class="page-section s-docs">
+            <span>User guide for Twitch:</span>
+            <ol>
+              <li>Your Twitch account must have 2FA (Two Factor Authentication) enabled to perform next actions.</li>
+              <li>Go to <a href="https://dev.twitch.tv/console" target="_blank">Twitch Developers Console</a> and login with Twtich.</li>
+              <li>
+                Navigate to <a href="https://dev.twitch.tv/console/apps">Applications</a> tab then click
+                <a href="https://dev.twitch.tv/console/apps/create">Register Your Application</a>.
+              </li>
+              <li>
+                Then fill the sections as:
+                <ul>
+                  <li>Name: <b>SpyWitch</b></li>
+                  <li>OAuth Redirect URLs: <b>https://shaanaliyev.github.io/spywitch</b></li>
+                  <li>Category: <b>Analytics Tool</b></li>
+                </ul>
+                and press "Create".
+              </li>
+            </ol>
+          </div>
+        </div>
+        <!-- Spy Page -->
+        <div page="#spy" class="page">
+          <span class="title">Controller:</span>
+          <div class="page-section s-search-mode" id="s-search-mode">
+            <span class="alt-title">Search Mode:</span>
+            <input type="radio" name="mode" id="auto" class="radio" checked />
+            <label for="auto">Auto</label>
+            <input type="radio" name="mode" id="manual" class="radio" />
+            <label for="manual">Manual</label>
+            <small mode="auto" id="default-mode-desc" class="active"
+              >You just need to enter usernames. The system will automatically select channels to start tracking. These channels are channels that are
+              currently live and are selected from the "following" lists of the users you provided.</small
+            >
+            <small mode="manual"
+              >You need to enter user and channel names. The system will start tracking on the channels you have given for the usernames you have
+              provided.</small
+            >
+          </div>
+          <div class="page-section s-spy" id="s-spy">
+            <label for="usernames" class="alt-title active">Usernames: <small>separated by comma (,) [max:100]</small></label>
+            <textarea id="usernames" class="active" rows="1" placeholder="username1, username2, username3"></textarea>
+            <label for="channels" class="alt-title">Channels: <small>separated by comma (,)</small></label>
+            <textarea id="channels" rows="2" placeholder="channel1, channel2, channel3"></textarea>
+            <button id="spyBtn">Start</button>
+          </div>
+          <span class="title">Status:</span>
+        </div>
+        <!-- Watch Page -->
+        <div page="#watch" class="page">33333333333333333333</div>
+        <!-- About Page -->
+        <div page="#about" class="page">444444444444444444444</div>
+      </div>
+    </main>
+    <script src="./assets/layout.js"></script>
+    <script src="./assets/setup.js"></script>
+  </body>
+</html>
