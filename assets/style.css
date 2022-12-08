@@ -427,6 +427,9 @@ user-select: none; */
   color: var(--w2);
   display: none;
 }
+.a-spy > .error {
+  border-bottom: 2px solid var(--r1);
+}
 .a-spy > .active {
   display: block;
 }
@@ -448,26 +451,53 @@ user-select: none; */
   background-color: var(--p1);
   color: var(--w0);
 }
+.a-spy > .on {
+  background-color: #ff9191;
+  color: var(--main_bg);
+}
+.a-spy > .on:hover {
+  background-color: #ff6565;
+}
 .a-spy > button:hover {
   background-color: var(--p1w);
 }
 
-/* ------ */
+/* ---- */
 /* Status */
 .a-status {
-  gap: 2rem;
-}
-.a-status > div {
-  width: 100%;
   background-color: var(--d3);
   padding: 0.3rem 0.6rem;
 }
-.a-status > div > span {
+.a-logs {
+  padding: 0.2rem 0.6rem 0.6rem 0.6rem;
+  font-size: 0.9rem;
+}
+.a-status > ul {
+  width: 100%;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 200px;
+}
+.a-status > ul > li {
+  padding: 0 0.4rem;
+  color: var(--w1);
+  border-left: 3px solid var(--d3w);
+  margin: 0.3rem 0 0 0;
+}
+.a-status > ul span {
+  color: var(--w3);
+  font-weight: 600;
+}
+/*  */
+.a-status > span {
   color: var(--w2);
 }
 .statusList {
-  margin: 0.5rem 0;
-  padding: 0.3rem;
+  width: 100%;
+  margin: 0;
+  padding: 0 0.3rem 0.3rem 0.3rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;

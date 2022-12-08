@@ -1,6 +1,7 @@
 // ------------------------------
 // Global state:
 let CID;
+let ACC;
 var TKN = localStorage.getItem('TKN');
 
 // ------------------------------
@@ -38,12 +39,9 @@ const handleToken = () => {
       if (window.opener.document.getElementById('rememberMe').checked) {
         // save to Local Storage:
         localStorage.setItem('TKN', token);
-        // also saving in TKN var (because we will be triggering checkSession directly from here):
-        window.opener.TKN = token;
-      } else {
-        // save in variable:
-        window.opener.TKN = token;
       }
+      // save in variable (we need it in the variable because we always use it from there):
+      window.opener.TKN = token;
       // run checkSession to update UI and and get clientID:
       window.opener.checkSession();
     }
@@ -72,6 +70,7 @@ var checkSession = async () => {
     if (data.client_id) {
       // save CID in variable:
       CID = data.client_id;
+      ACC = data.login;
       // UI/ set account name:
       document.getElementById('profile').innerText = data.login;
       // UI/ hide setup form:
@@ -82,6 +81,7 @@ var checkSession = async () => {
       // Clear Saved Data:
       localStorage.clear();
       CID = undefined;
+      ACC = undefined;
       TKN = undefined;
       // reload page:
       location.reload();
@@ -99,6 +99,7 @@ document.getElementById('revoke').addEventListener('click', () => {
   // Clear Saved Data:
   localStorage.clear();
   CID = undefined;
+  ACC = undefined;
   TKN = undefined;
   // required Setup Page elements:
   const s_setup = document.getElementById('a-setup');

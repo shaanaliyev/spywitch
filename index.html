@@ -41,7 +41,7 @@
         <!-- Setup Page -->
         <div page="#setup" class="page">
           <div class="section">
-            <span class="s-title">Twitch:</span>
+            <span class="s-title">Twitch</span>
             <div class="area a-setup active" id="a-setup">
               <label for="clientId" class="label">Twitch App Client ID:</label>
               <input type="password" name="clientId" id="clientId" placeholder="• • •" />
@@ -83,7 +83,7 @@
         <!-- Spy Page -->
         <div page="#spy" class="page">
           <div class="section">
-            <span class="s-title">Controller:</span>
+            <span class="s-title">Controller</span>
             <div class="area a-search-mode" id="a-search-mode">
               <span class="label">Search Mode:</span>
               <input type="radio" name="mode" id="auto" class="radioBtn" checked />
@@ -108,29 +108,24 @@
             </div>
           </div>
           <div class="section">
-            <span class="s-title">Logs:</span>
-            <div class="area a-status">
-              <div>s</div>
+            <span class="s-title">Status</span>
+            <div class="area a-status a-logs">
+              <ul id="logs"></ul>
             </div>
-          </div>
-          <div class="section">
-            <span class="s-title">Status:</span>
             <div class="area a-status">
-              <div>
-                <span>Watching these users:</span>
-                <div class="statusList">
-                  <span>user1</span>
-                  <span>user2</span>
-                  <span>user3</span>
-                </div>
+              <span>Watching these users:</span>
+              <div class="statusList">
+                <span>user1</span>
+                <span>user2</span>
+                <span>user3</span>
               </div>
-              <div>
-                <span>Listening on these channels:</span>
-                <div class="statusList">
-                  <span>channel1</span>
-                  <span>channel2</span>
-                  <span>channel3</span>
-                </div>
+            </div>
+            <div class="area a-status">
+              <span>Listening on these channels:</span>
+              <div class="statusList">
+                <span>user1</span>
+                <span>user2</span>
+                <span>user3</span>
               </div>
             </div>
           </div>
@@ -143,6 +138,6 @@
     </main>
     <script src="./assets/layout.js"></script>
     <script src="./assets/setup.js"></script>
-    <script src="./assets/spy.js"></script>
+    <script type="module" src="./assets/spy.js"></script>
   </body>
 </html>
