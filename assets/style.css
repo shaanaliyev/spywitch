@@ -27,6 +27,8 @@
   --d1w: #7e7e7e;
   --d2: #3d3d3d;
   --d2w: #4b4b4b;
+  --d3: #333333;
+  --d3w: #5f5f5f;
   --r1: #ff9998;
   --r2: #ff7070;
   --p1: #a970ff;
@@ -46,7 +48,6 @@ body {
 .w {
   width: 100%;
   max-width: 1350px;
-  overflow: hidden;
 }
 
 /* No Select */
@@ -65,6 +66,7 @@ user-select: none; */
   align-items: center;
   border-radius: 1rem 1rem 0 0;
   margin: 1rem 0 0 0;
+  overflow: hidden;
 }
 .head > img {
   margin: 0 0 0 1rem;
@@ -163,6 +165,7 @@ user-select: none; */
   background-color: var(--d1w);
 }
 /* ---------------- */
+/* ---------------- */
 /* Content */
 .content {
   flex: 8;
@@ -181,39 +184,42 @@ user-select: none; */
   margin: 1rem;
 }
 .content > .active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-.title {
+/* Section */
+.s-title {
   display: block;
   color: var(--w2);
   font-size: 1.3rem;
   font-weight: 700;
 }
-.page-section {
+.area {
   margin: 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   overflow: hidden;
 }
-.page > .active {
+.section > .active {
   display: flex;
 }
-.alt-title {
+.label {
   width: 100%;
   color: var(--w2);
   font-weight: 500;
 }
-.alt-title > small {
+.label > small {
   color: var(--w3);
   font-weight: normal;
 }
+/* ----------- */
 /* Page: Setup */
-.s-setup {
+.a-setup {
   display: none;
-  margin-bottom: 2rem;
 }
-.s-setup > input {
+.a-setup > input {
   flex: 5;
   outline: none;
   border: none;
@@ -224,16 +230,16 @@ user-select: none; */
   background-color: var(--d2);
   color: var(--w2);
 }
-.s-setup > input:focus {
+.a-setup > input:focus {
   background-color: var(--d1);
 }
-.s-setup > .error {
+.a-setup > .error {
   border-bottom: 2px solid var(--r1);
 }
-.s-setup > input::placeholder {
-  color: var(--d1w);
-}
-.s-setup > button {
+/* .a-setup > input::placeholder {
+  color: var(--p1w);
+} */
+.a-setup > button {
   flex: 1;
   cursor: pointer;
   outline: none;
@@ -244,7 +250,7 @@ user-select: none; */
   background-color: var(--p1);
   color: var(--w0);
 }
-.s-setup > button:hover {
+.a-setup > button:hover {
   background-color: var(--p1w);
 }
 /* Checkbox */
@@ -298,8 +304,7 @@ user-select: none; */
   transform: rotate(45deg);
 }
 /* Account */
-.s-account {
-  margin-bottom: 2rem;
+.a-account {
   display: none;
 }
 .account {
@@ -308,8 +313,10 @@ user-select: none; */
   padding: 0.5rem 1rem;
   font-weight: 500;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 .account > button {
   cursor: pointer;
@@ -322,90 +329,92 @@ user-select: none; */
 .account > button:hover {
   background-color: var(--d2w);
 }
-/*  */
-
-.s-docs {
+/* Docs */
+.a-docs {
   background-color: #1f1929;
+  margin-top: 2rem;
   padding: 1rem;
   color: var(--w2);
   border: 2px solid #6740a0;
-  border-radius: 5px;
   overflow: auto;
 }
-.s-docs > span {
+.a-docs > span {
   width: 100%;
   font-weight: 600;
   font-size: 1.2rem;
 }
-.s-docs > ol {
+.a-docs > ol {
   margin: 0;
 }
-.s-docs > ol > li {
+.a-docs > ol > li {
   margin: 0.3rem 0 0 0;
 }
-.s-docs > ol a {
+.a-docs > ol a {
   color: var(--p1);
 }
-.s-docs > ol b {
+.a-docs > ol b {
   color: var(--r2);
 }
 
+/* --------- */
 /* Page: Spy */
-.s-search-mode {
+.a-search-mode {
   color: var(--w2);
 }
+.a-search-mode label {
+  cursor: pointer;
+}
 /* radio buttons */
-.radio {
+.radioBtn {
   cursor: pointer;
   height: 1rem;
   width: 1rem;
-  appearance: none; /* hiding browser el */
-  -webkit-appearance: none; /* Safari support */
+  appearance: none;
+  -webkit-appearance: none;
   border: 0.2rem solid var(--w0);
   background-color: var(--d2);
   border-radius: 50%;
   outline: none;
 }
-.s-search-mode label {
-  cursor: pointer;
-}
-.radio:focus-visible {
+.radioBtn:focus-visible {
   outline-offset: 0;
 }
-.radio:hover {
+.radioBtn:hover {
   background-color: var(--d1w);
 }
-.radio:checked {
+.radioBtn:checked {
   box-shadow: 0 0 0 2px var(--p1);
   background-color: var(--p1);
   border-width: 0.2rem;
 }
-.s-search-mode > :nth-child(4) {
+.a-search-mode > :nth-child(4) {
   margin-left: 5rem;
 }
 @media only screen and (max-width: 45rem) {
-  .s-search-mode > :nth-child(4) {
+  .a-search-mode > :nth-child(4) {
     margin-left: 2rem;
   }
 }
-.s-search-mode > small {
+.a-search-mode > small {
   width: 100%;
-  padding: 0.2rem 0.5rem;
-  border-radius: 5px;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.5rem 0.3rem 0.5rem;
   font-size: 0.9rem;
   display: none;
+  background-color: var(--d3);
 }
-.s-search-mode > .active {
+.a-search-mode > .active {
   display: block;
 }
+
 /*  */
-.s-spy {
+.a-spy {
   justify-content: flex-end;
 }
-.s-spy > label {
+.a-spy > label {
   display: none;
 }
-.s-spy > textarea {
+.a-spy > textarea {
   width: 100%;
   resize: none;
   outline: none;
@@ -418,23 +427,56 @@ user-select: none; */
   color: var(--w2);
   display: none;
 }
-.s-spy > .active {
+.a-spy > .active {
   display: block;
 }
-.s-spy > textarea:focus {
+.a-spy > textarea:focus {
   background-color: var(--d1);
 }
-.s-spy > button {
+#channelsL {
+  margin-top: 0.5rem;
+}
+.a-spy > button {
   cursor: pointer;
   outline: none;
   border: none;
   border-radius: 5px;
+  margin-top: 0.5rem;
   padding: 0.6rem 3rem;
   font-size: 1rem;
   font-weight: 600;
   background-color: var(--p1);
   color: var(--w0);
 }
-.s-spy > button:hover {
+.a-spy > button:hover {
   background-color: var(--p1w);
+}
+
+/* ------ */
+/* Status */
+.a-status {
+  gap: 2rem;
+}
+.a-status > div {
+  width: 100%;
+  background-color: var(--d3);
+  padding: 0.3rem 0.6rem;
+}
+.a-status > div > span {
+  color: var(--w2);
+}
+.statusList {
+  margin: 0.5rem 0;
+  padding: 0.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-height: 5rem;
+  overflow-y: auto;
+}
+.statusList > span {
+  background-color: var(--d3w);
+  color: var(--w0);
+  padding: 0.1rem 0.3rem 0.3rem 0.3rem;
+  border-radius: 5px;
 }

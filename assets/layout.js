@@ -14,7 +14,7 @@ const bootPage = () => {
     const reqPage = pages.has(hash) ? hash : '#setup';
     if (pageElement.getAttribute('page') === reqPage) {
       pageElement.classList.add('active');
-      document.getElementById(reqPage.substring(1)).classList.add('active');
+      document.getElementById(reqPage).classList.add('active');
       activePageElement = pageElement;
       activeHash = reqPage;
       break;
@@ -33,27 +33,12 @@ window.addEventListener('hashchange', () => {
     const reqPage = pages.has(hash) ? hash : '#setup';
     if (pageElement.getAttribute('page') === reqPage) {
       activePageElement && activePageElement.classList.remove('active');
-      activeHash && document.getElementById(activeHash.substring(1)).classList.remove('active');
+      activeHash && document.getElementById(activeHash).classList.remove('active');
       pageElement.classList.add('active');
-      document.getElementById(reqPage.substring(1)).classList.add('active');
+      document.getElementById(reqPage).classList.add('active');
       activePageElement = pageElement;
       activeHash = reqPage;
       break;
     }
   }
 });
-
-// ------------------------------
-// Change active page dynamically on hashchange:
-// document.getElementById('navbar').addEventListener('click', (event) => {
-//   const navElement = event.target;
-//   if (navElement.hasAttribute('href')) {
-//     const targetSelector = navElement.getAttribute('href');
-//     const targetPage = document.querySelectorAll('div[page="' + targetSelector + '"]')[0];
-//     if (targetPage) {
-//       activePageElement && activePageElement.classList.remove('active');
-//       targetPage.classList.add('active');
-//       activePageElement = targetPage;
-//     }
-//   }
-// });

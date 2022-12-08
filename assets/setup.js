@@ -75,14 +75,15 @@ var checkSession = async () => {
       // UI/ set account name:
       document.getElementById('profile').innerText = data.login;
       // UI/ hide setup form:
-      document.getElementById('s-setup').classList.remove('active');
+      document.getElementById('a-setup').classList.remove('active');
       // UI/ show account info panel:
-      document.getElementById('s-account').classList.add('active');
+      document.getElementById('a-account').classList.add('active');
     } else {
       // Clear Saved Data:
       localStorage.clear();
       CID = undefined;
       TKN = undefined;
+      // reload page:
       location.reload();
     }
   }
@@ -100,8 +101,8 @@ document.getElementById('revoke').addEventListener('click', () => {
   CID = undefined;
   TKN = undefined;
   // required Setup Page elements:
-  const s_setup = document.getElementById('s-setup');
-  const s_account = document.getElementById('s-account');
+  const s_setup = document.getElementById('a-setup');
+  const s_account = document.getElementById('a-account');
   const profile = document.getElementById('profile');
   // UI/ remove account name:
   profile.innerText = '';
@@ -109,6 +110,6 @@ document.getElementById('revoke').addEventListener('click', () => {
   s_account.classList.remove('active');
   // UI/ show setup form:
   s_setup.classList.add('active');
-  // reload page :)
+  // reload page :
   location.reload();
 });
