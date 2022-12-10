@@ -17,35 +17,73 @@ const logger = (message) => {
 };
 
 // --------------------------
+// CHAT:
+const chat = ({ user, channel, message }) => {
+  // New message indicator:
+  const tabBtn = document.getElementById('u_' + user);
+  if (!tabBtn.classList.contains('active')) {
+    tabBtn.classList.add('noti');
+  }
+  // Append message:
+  const targetTab = document.querySelectorAll('ul[tab="u_' + user + '"]')[0];
+  const element = document.createElement('li');
+  element.innerHTML = '<span>' + time() + ' </span><span>' + channel + ' </span><span>> </span>' + message;
+  targetTab.append(element);
+  keepScroll(targetTab);
+};
+
+// --------------------------
 // FILL DATA:
 const dataFiller = (data) => {
   const indicator = document.getElementById('indicator');
   const userListElement = document.getElementById('userList');
   const channelListElement = document.getElementById('channelList');
   if (data?.users && data?.channels) {
+    // users:
     data.users.forEach((user) => {
+      // status:
       const item = document.createElement('span');
       item.innerHTML = user;
       userListElement.append(item);
+      // Watch/ tabs:
+      const userTabs = document.createElement('span');
+      userTabs.setAttribute('id', 'u_' + user);
+      userTabs.innerText = user;
+      document.getElementById('userTabs').append(userTabs);
+      //  Watch/ messages
+      const messagesTab = document.createElement('ul');
+      messagesTab.setAttribute('tab', 'u_' + user);
+      document.getElementById('messageTabs').append(messagesTab);
     });
+    // channels:
     data.channels.forEach((channel) => {
       const item = document.createElement('span');
       item.innerHTML = channel;
       channelListElement.append(item);
     });
+    // status:
     _statusTitle(0, true);
     _statusTitle(1, true);
+    // indicator:
     indicator.classList.add('active');
     indicator.innerText = 'Active';
   } else {
+    // status:
     userListElement.innerHTML = '';
-    document.getElementById('uStatus').innerHTML = 0;
     channelListElement.innerHTML = '';
-    document.getElementById('cStatus').innerHTML = 0;
     _statusTitle(0, false);
     _statusTitle(1, false);
+    // indicator:
     indicator.classList.remove('active');
     indicator.innerText = 'Not Activated';
+    document.getElementById('uStatus').innerHTML = 0;
+    document.getElementById('cStatus').innerHTML = 0;
+    // WATCH/ userTabs:
+    document.getElementById('userTabs').innerHTML = '';
+    // UI - btn:
+    const theBtn = document.getElementById('spyBtn');
+    theBtn.classList.remove('on');
+    theBtn.innerHTML = 'Start';
   }
 };
 // UI/ show-hide status titles (idk why I split this as a separate function xd):
@@ -67,8 +105,6 @@ const start = (e) => {
   // CHECK 1/ if already active:
   if (theBtn.classList.contains('on')) {
     spyStop(logger, dataFiller);
-    theBtn.classList.remove('on');
-    theBtn.innerHTML = 'Start';
     return;
   }
 
@@ -135,19 +171,13 @@ const start = (e) => {
       _filterInputs(usernamesElement.value),
       _filterInputs(channelsElement.value),
       logger,
-      dataFiller /*, chat */
+      dataFiller,
+      chat
     );
   }
   // auto mode:
   else {
-    spy(
-      'auto',
-      { clientId: CID, oauth: TKN, nick: ACC },
-      _filterInputs(usernamesElement.value),
-      null,
-      logger,
-      dataFiller /*, chat */
-    );
+    spy('auto', { clientId: CID, oauth: TKN, nick: ACC }, _filterInputs(usernamesElement.value), null, logger, dataFiller, chat);
   }
 };
 

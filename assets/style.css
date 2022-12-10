@@ -217,6 +217,10 @@ user-select: none; */
   color: var(--w3);
   font-weight: normal;
 }
+.label > b {
+  color: var(--w1);
+  text-decoration: underline;
+}
 /* ----------- */
 /* Page: Setup */
 .a-setup {
@@ -526,4 +530,79 @@ user-select: none; */
   color: var(--w0);
   padding: 0.1rem 0.3rem 0.3rem 0.3rem;
   border-radius: 5px;
+}
+
+/* ---------- */
+/* Page Watch */
+/*  */
+.userTabs {
+  width: 100%;
+  background-color: var(--d3);
+  padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-height: 8.7rem;
+  overflow-y: auto;
+}
+.userTabs > span {
+  cursor: pointer;
+  color: var(--w0);
+  background-color: var(--d3w);
+  padding: 0 0.3rem 0.2rem 0.3rem;
+  border-radius: 0 0 5px 5px;
+  border-top: 3px solid var(--d1w);
+}
+.userTabs > .noti {
+  border-top: 3px solid #83ff9a;
+}
+.userTabs > .active {
+  background-color: var(--w1) !important;
+  border-top: 3px solid var(--w1);
+  color: var(--d3);
+}
+.userTabs > span:hover {
+  background-color: var(--d1w);
+}
+
+/* messageTabs */
+.messageTabs {
+  width: 100%;
+  background-color: var(--d3);
+  padding: 0.1rem 0.6rem 0.6rem 0.6rem;
+}
+.messageTabs > ul {
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  overflow-y: auto;
+  list-style-type: none;
+  max-height: 500px;
+  display: none;
+}
+.messageTabs > .active {
+  display: block;
+}
+.messageTabs > ul span:nth-child(1) {
+  color: var(--w3);
+  font-weight: 600;
+}
+.messageTabs > ul span:nth-child(2) {
+  color: var(--p1);
+  font-weight: 600;
+}
+.messageTabs > ul span:nth-child(3) {
+  color: var(--w3);
+  font-weight: 800;
+}
+.messageTabs > ul > li {
+  margin: 0.4rem 0 0 0;
+  padding: 0 0.4rem;
+  color: var(--w1);
+  border-left: 3px solid var(--d3w);
+}
+.messageTabs > ul > li:hover {
+  transition: 0.2s ease;
+  border-left: 3px solid var(--p1w);
+  background-color: var(--d3w);
 }

@@ -5,9 +5,11 @@ import { messageParser } from './helpers.js';
 let ws = null;
 // --------------------------
 // SPY:
-export const spy = (mode, secret, userList, channelList, logger, dataFiller) => {
+export const spy = (mode, secret, userList, channelList, logger, dataFiller, chat) => {
   // data to fill by using dataFiller:
   let dataToFill = {};
+  // error detector:
+  let error = false;
   // creating ws connection:
   ws = new WebSocket('wss://irc-ws.chat.twitch.tv:443');
   // WS:
@@ -24,6 +26,7 @@ export const spy = (mode, secret, userList, channelList, logger, dataFiller) => 
     const users = await getUsersInfo(secret, usersArr);
     if (!users.status) {
       logger('<error>✕ ' + users.message + '</error>');
+      error = true;
     } else if (ws) {
       // getUsersInfo report:
       logger('<success>✓</success> Users: <b>' + users.data.ids.length + '</b>');
@@ -36,6 +39,7 @@ export const spy = (mode, secret, userList, channelList, logger, dataFiller) => 
       const following = await getFollowingInfo(secret, users.data.ids);
       if (!following.status) {
         logger('<error>✕ ' + following.message + '</error>');
+        error = true;
       } else if (ws) {
         logger('<success>✓</success> Channels: <b>' + following.data.length + '</b>');
         // +++getFollowingInfo;
@@ -45,6 +49,7 @@ export const spy = (mode, secret, userList, channelList, logger, dataFiller) => 
         const liveChannels = await getLiveChannelsInfo(secret, following.data);
         if (!liveChannels.status) {
           logger('<error>✕ ' + liveChannels.message + '</error>');
+          error = true;
         } else if (ws) {
           logger('<success>✓</success> Channels: <b>' + liveChannels.data.length + '</b>');
           dataToFill = { ...dataToFill, channels: liveChannels.data };
@@ -69,13 +74,12 @@ export const spy = (mode, secret, userList, channelList, logger, dataFiller) => 
           // reading messages:
           ws.onmessage = (message) => {
             const response = messageParser(message);
-            // Chat message logic here:
+            // if has messages
             if (response.status) {
-              // Only specific users:
+              // filter for specific users:
               if (userList.has(response.data?.user)) {
-                // console.log(response.data);
-                // chat(response.data); // <---------------- !!!!!
-                console.log(response.data);
+                // send messages to chat method to handle:
+                chat(response.data);
               }
             } else if (response.message === 'keepalive') {
               ws.send('PONG');
@@ -87,6 +91,9 @@ export const spy = (mode, secret, userList, channelList, logger, dataFiller) => 
           dataFiller(dataToFill);
         }
       }
+    }
+    if (error) {
+      spyStop(logger, dataFiller);
     }
   };
 };

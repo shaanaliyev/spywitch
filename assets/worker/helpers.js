@@ -48,7 +48,6 @@ export const messageParser = (message) => {
     return {
       status: true,
       data: {
-        timestamp: time(),
         user: msgUser,
         channel: msgChannel,
         message: msgMessage,
