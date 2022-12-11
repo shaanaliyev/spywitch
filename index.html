@@ -13,12 +13,11 @@
   </head>
   <body>
     <!-- Head -->
-    <div class="head w">
-      <img src="./assets/spywitch.png" width="45" alt="spywitch" />
+    <div class="head w ns">
+      <a href="javascript:location.reload()"></a>
+      <!-- <img src="./assets/spywitch.png" width="45" alt="spywitch" /> -->
       <h1>SpyWitch</h1>
-      <a target="_blank" href="https://github.com/shaanaliyev/spywitch">
-        <img src="./assets/github.png" alt="spywitch-github" width="25" />
-      </a>
+      <a target="_blank" href="https://github.com/shaanaliyev/spywitch"></a>
     </div>
     <!-- Main -->
     <main class="main w">
@@ -32,7 +31,7 @@
           </div>
         </div>
         <!-- Navbar -->
-        <div class="navbar" id="navbar">
+        <div class="navbar ns" id="navbar">
           <a href="#setup" id="#setup">Setup</a>
           <a href="#spy" id="#spy">Spy</a>
           <a href="#watch" id="#watch">Watch</a>
@@ -47,9 +46,9 @@
             <span class="s-title">Twitch</span>
             <div class="area a-setup active" id="a-setup">
               <label for="clientId" class="label">Twitch App Client ID:</label>
-              <input type="password" name="clientId" id="clientId" placeholder="• • •" />
-              <button id="clientIdBtn">Connect</button>
-              <label class="checkbox">
+              <input type="password" name="clientId" id="clientId" class="ns" placeholder="• • •" />
+              <button id="clientIdBtn" class="ns">Connect</button>
+              <label class="checkbox ns">
                 <input type="checkbox" id="rememberMe" />
                 <span class="checkmark"></span> Remember me
               </label>
@@ -58,7 +57,7 @@
               <div class="account">
                 <span>Connected With Twitch</span>
                 <span>Account: <b id="profile"></b></span>
-                <button id="revoke">Revoke Access</button>
+                <button id="revoke" class="ns">Revoke Access</button>
               </div>
             </div>
             <div class="area a-docs">
@@ -93,9 +92,9 @@
             <div class="area a-search-mode" id="a-search-mode">
               <span class="label">Search Mode:</span>
               <input type="radio" name="mode" id="auto" class="radioBtn" checked />
-              <label for="auto">Auto</label>
+              <label for="auto" class="ns">Auto</label>
               <input type="radio" name="mode" id="manual" class="radioBtn" />
-              <label for="manual">Manual</label>
+              <label for="manual" class="ns">Manual</label>
               <small id="autoDesc" class="active"
                 >You just need to enter usernames. The system will automatically select channels to start tracking. These channels
                 are channels that are currently live and are selected from the "following" lists of the users you provided.</small
@@ -107,10 +106,10 @@
             </div>
             <div class="area a-spy" id="a-spy">
               <label for="usernames" class="label active">Usernames: <small>separated by comma (,) [max:100]</small></label>
-              <textarea id="usernames" class="active" rows="1" placeholder="username1, username2, username3"></textarea>
+              <textarea id="usernames" class="active ns" rows="1" placeholder="username1, username2, username3"></textarea>
               <label for="channels" id="channelsL" class="label">Channels: <small>separated by comma (,)</small></label>
-              <textarea id="channels" rows="2" placeholder="channel1, channel2, channel3"></textarea>
-              <button id="spyBtn">Start</button>
+              <textarea id="channels" class="ns" rows="2" placeholder="channel1, channel2, channel3"></textarea>
+              <button id="spyBtn" class="ns">Start</button>
             </div>
           </div>
           <div class="section">
