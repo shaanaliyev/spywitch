@@ -70,34 +70,22 @@ body {
   margin: 1rem 0 0 0;
   overflow: hidden;
 }
-.head > a:nth-child(1) {
+.head > img {
+  cursor: pointer;
   margin: 0 0 0 1rem;
   transform: rotate(-10deg);
-  transition: 0.2s ease;
-  background-image: url('./spywitch.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: top 3px left 0;
-  width: 45px;
-  height: 45px;
-}
-.head > a:nth-child(1):hover {
-  transform: rotate(20deg);
-  transition: 0.2s ease;
 }
 .head > h1 {
   font-size: 1.3rem;
   color: var(--w1);
 }
-.head > a:nth-child(3) {
+.head > a {
   margin: 0 1rem 0 0;
-  background-image: url('./github.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 25px;
-  height: 25px;
 }
-.head > a:nth-child(3):hover {
+.head > a > img {
+  display: block;
+}
+.head > a > img:hover {
   filter: brightness(100);
 }
 
