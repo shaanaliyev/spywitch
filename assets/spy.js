@@ -80,6 +80,9 @@ const dataFiller = (data) => {
     document.getElementById('cStatus').innerHTML = 0;
     // WATCH/ userTabs:
     document.getElementById('userTabs').innerHTML = '';
+    // WATCH/ messageTabs:
+    document.getElementById('messageTabs').innerHTML = '';
+    document.getElementById('messagesFrom').innerText = '';
     // UI - btn:
     const theBtn = document.getElementById('spyBtn');
     theBtn.classList.remove('on');

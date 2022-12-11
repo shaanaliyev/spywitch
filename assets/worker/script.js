@@ -11,7 +11,7 @@ export const spy = (mode, secret, userList, channelList, logger, dataFiller, cha
   // error detector:
   let error = false;
   // creating ws connection:
-  ws = new WebSocket('wss://irc-ws.chat.twitch.tv:443');
+  ws = new WebSocket('wss://irc-ws.chat.twitch.tv:443'); // address for localhost: ws://irc-ws.chat.twitch.tv:80
   // WS:
   ws.onopen = async () => {
     logger('<success>Connected!</success>');
@@ -34,51 +34,91 @@ export const spy = (mode, secret, userList, channelList, logger, dataFiller, cha
       dataToFill = { ...dataToFill, users: users.data.usernames };
       // +++getUsersInfo;
 
-      // ~~~SERVICE: getFollowingInfo:
-      logger('Following data...');
-      const following = await getFollowingInfo(secret, users.data.ids);
-      if (!following.status) {
-        logger('<error>✕ ' + following.message + '</error>');
-        error = true;
-      } else if (ws) {
-        logger('<success>✓</success> Channels: <b>' + following.data.length + '</b>');
-        // +++getFollowingInfo;
-
-        // ~~~SERVICE: getLiveChannelsInfo:
-        logger('Live channels data...');
-        const liveChannels = await getLiveChannelsInfo(secret, following.data);
-        if (!liveChannels.status) {
-          logger('<error>✕ ' + liveChannels.message + '</error>');
+      // ===========
+      // AUTO MODE:
+      if (mode === 'auto') {
+        // ~~~SERVICE: getFollowingInfo:
+        logger('Following data...');
+        const following = await getFollowingInfo(secret, users.data.ids);
+        if (!following.status) {
+          logger('<error>✕ ' + following.message + '</error>');
           error = true;
         } else if (ws) {
-          logger('<success>✓</success> Channels: <b>' + liveChannels.data.length + '</b>');
-          dataToFill = { ...dataToFill, channels: liveChannels.data };
-          // +++getLiveChannelsInfo;
+          logger('<success>✓</success> Channels: <b>' + following.data.length + '</b>');
+          // +++getFollowingInfo;
 
-          // ==============
-          // JOINING
-          // ==============
+          // ~~~SERVICE: getLiveChannelsInfo:
+          logger('Live channels data...');
+          const liveChannels = await getLiveChannelsInfo(secret, following.data);
+          if (!liveChannels.status) {
+            logger('<error>✕ ' + liveChannels.message + '</error>');
+            error = true;
+          } else if (ws) {
+            logger('<success>✓</success> Channels: <b>' + liveChannels.data.length + '</b>');
+            dataToFill = { ...dataToFill, channels: liveChannels.data };
+            // +++getLiveChannelsInfo;
+
+            // ==============
+            // JOINING
+            // ==============
+            logger('Joining...');
+            // join list maker:
+            let list = liveChannels.data.map((e) => '#' + e);
+            list = list.join(',');
+            // auth & join:
+            ws.send('PASS oauth:' + secret.oauth);
+            ws.send('NICK ' + secret.nick);
+            ws.send('JOIN ' + list);
+            logger('<success>Joined Successfully</success>');
+
+            // ==============
+            // SPYING
+            // ==============
+            // reading messages:
+            ws.onmessage = (message) => {
+              const response = messageParser(message);
+              // if has messages
+              if (response.status) {
+                // filter for specific users:
+                if (userList.has(response.data?.user)) {
+                  // send messages to chat method to handle:
+                  chat(response.data);
+                }
+              } else if (response.message === 'keepalive') {
+                ws.send('PONG');
+              }
+            };
+            // FILL DATA:
+            document.getElementById('uStatus').innerHTML = dataToFill.users.length;
+            document.getElementById('cStatus').innerHTML = dataToFill.channels.length;
+            dataFiller(dataToFill);
+          }
+        }
+      }
+      // ===========
+      // MANUAL MODE (same process but this time the channels selected manually)
+      else if (mode === 'manual') {
+        logger('Channel data...');
+        const channelsArr = Array.from(channelList);
+        const channels = await getUsersInfo(secret, channelsArr);
+        if (!channels.status) {
+          logger('<error>✕ ' + channels.message + '</error>');
+          error = true;
+        } else if (ws) {
+          logger('<success>✓</success> Users: <b>' + channels.data.ids.length + '</b>');
+          dataToFill = { ...dataToFill, channels: channels.data.usernames };
           logger('Joining...');
-          // join list maker:
-          let list = liveChannels.data.map((e) => '#' + e);
+          let list = channels.data.usernames.map((e) => '#' + e);
           list = list.join(',');
-          // auth & join:
           ws.send('PASS oauth:' + secret.oauth);
           ws.send('NICK ' + secret.nick);
           ws.send('JOIN ' + list);
           logger('<success>Joined Successfully</success>');
-
-          // ==============
           // SPYING
-          // ==============
-          // reading messages:
           ws.onmessage = (message) => {
             const response = messageParser(message);
-            // if has messages
             if (response.status) {
-              // filter for specific users:
               if (userList.has(response.data?.user)) {
-                // send messages to chat method to handle:
                 chat(response.data);
               }
             } else if (response.message === 'keepalive') {
