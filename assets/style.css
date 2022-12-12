@@ -600,7 +600,6 @@ body {
   border-left: 3px solid var(--d3w);
 }
 .messageTabs > ul > li:hover {
-  transition: 0.2s ease;
   border-left: 3px solid var(--p1w);
   background-color: var(--d3w);
 }

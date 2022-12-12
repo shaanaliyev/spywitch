@@ -17,7 +17,7 @@ document.getElementById('clientIdBtn').addEventListener('click', () => {
     window.open(
       'https://id.twitch.tv/oauth2/authorize?client_id=' +
         clientIdElement.value +
-        '&redirect_uri=https://shaanaliyev.com&response_type=token&scope=chat:read',
+        '&redirect_uri=https://test-server.org&response_type=token&scope=chat:read',
       'setup'
     );
   } else {
