@@ -38,14 +38,15 @@ const dataFiller = (data) => {
   const indicator = document.getElementById('indicator');
   const userListElement = document.getElementById('userList');
   const channelListElement = document.getElementById('channelList');
+  // ON:
   if (data?.users && data?.channels) {
     // users:
     data.users.forEach((user) => {
-      // status:
+      // SPY/ status:
       const item = document.createElement('span');
       item.innerHTML = user;
       userListElement.append(item);
-      // Watch/ tabs:
+      // WATCH/ tabs:
       const userTabs = document.createElement('span');
       userTabs.setAttribute('id', 'u_' + user);
       userTabs.innerText = user;
@@ -57,18 +58,21 @@ const dataFiller = (data) => {
     });
     // channels:
     data.channels.forEach((channel) => {
+      // SPY/ status:
       const item = document.createElement('span');
       item.innerHTML = channel;
       channelListElement.append(item);
     });
-    // status:
+    // SPY/ status:
     _statusTitle(0, true);
     _statusTitle(1, true);
     // indicator:
     indicator.classList.add('active');
     indicator.innerText = 'Active';
-  } else {
-    // status:
+  }
+  // OFF:
+  else {
+    // SPY/ status:
     userListElement.innerHTML = '';
     channelListElement.innerHTML = '';
     _statusTitle(0, false);
@@ -184,7 +188,7 @@ const start = (e) => {
   }
 };
 
-// filter input data:
+// filter input data: (remove extra spaces, empty elements, duplicates)
 const _filterInputs = (data) => {
   return new Set(
     data
