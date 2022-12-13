@@ -509,6 +509,10 @@ body {
   color: var(--r1);
   font-weight: 600;
 }
+.a-status > ul channel {
+  color: var(--p1w);
+  font-weight: 600;
+}
 /*  */
 .a-status > span {
   color: var(--w2);

@@ -1,5 +1,5 @@
 import { twServices } from './services.js';
-import { messageParser } from './helpers.js';
+import { sleep, messageParser } from './helpers.js';
 
 // a global ws connection holder:
 let ws = null;
@@ -71,34 +71,59 @@ export const spy = async (mode, secret, userList, channelList, logger, dataFille
 
     // JOIN & SPY:
     if (!error && ws) {
-      // JOINING:
+      // =====
+      // JOIN:
       logger('Joining...');
-      // join list maker:
-      let list = dataToFill.channels.map((e) => '#' + e);
-      list = list.join(',');
+      // join list maker (chunked): [In order not to exceed the rate limit => 15 joins per 11 seconds]
+      const listChunks = dataToFill.channels.reduce((all, one, i) => {
+        const ch = Math.floor(i / 15);
+        all[ch] = [].concat(all[ch] || [], '#' + one).join(',');
+        return all;
+      }, []);
       // auth & join:
+      console.log(listChunks);
       ws.send('PASS oauth:' + secret.oauth);
       ws.send('NICK ' + secret.nick);
-      ws.send('JOIN ' + list);
-      logger('<success>Joined Successfully</success>');
-      // reading messages:
-      ws.onmessage = (message) => {
-        const response = messageParser(message);
-        // if has messages
-        if (response.status) {
-          // filter for specific users:
-          if (userList.has(response.data?.user)) {
-            // send messages to chat method to handle:
-            chat(response.data);
-          }
-        } else if (response.message === 'keepalive') {
-          ws.send('PONG');
+      for (const chunk of listChunks) {
+        if (!ws) break;
+        // join
+        ws.send('JOIN ' + chunk);
+        // show joined channels:
+        logger(
+          chunk
+            .substring(1)
+            .split(',#')
+            .map((channel) => {
+              return '<channel>' + channel + '</channel>';
+            })
+            .join(', ')
+        );
+        if (listChunks.length > 1) {
+          await sleep(11000);
         }
-      };
-      // FILL DATA:
-      document.getElementById('uStatus').innerHTML = dataToFill.users.length;
-      document.getElementById('cStatus').innerHTML = dataToFill.channels.length;
-      dataFiller(dataToFill);
+      }
+      // =====
+      // SPY:
+      if (ws) {
+        logger('<success>Joined Successfully</success>');
+        ws.onmessage = (message) => {
+          const response = messageParser(message);
+          // if has messages
+          if (response.status) {
+            // filter for specific users:
+            if (userList.has(response.data?.user)) {
+              // send messages to chat method to handle:
+              chat(response.data);
+            }
+          } else if (response.message === 'keepalive') {
+            ws.send('PONG');
+          }
+        };
+        // FILL DATA:
+        document.getElementById('uStatus').innerHTML = dataToFill.users.length;
+        document.getElementById('cStatus').innerHTML = dataToFill.channels.length;
+        dataFiller(dataToFill);
+      }
     }
   };
 

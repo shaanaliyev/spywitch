@@ -24,6 +24,12 @@ export const keepScroll = (iParent) => {
 };
 
 // --------------------------
+// Sleep function:
+export const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+// --------------------------
 // Make messages readable.
 export const messageParser = (message) => {
   let data = message?.data ?? '';
