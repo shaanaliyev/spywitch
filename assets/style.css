@@ -496,6 +496,8 @@ body {
   color: var(--w1);
   border-left: 3px solid var(--d3w);
   margin: 0.3rem 0 0 0;
+  -ms-word-break: break-all;
+  word-break: break-all;
 }
 .a-status > ul span {
   color: var(--w3);
@@ -602,6 +604,8 @@ body {
   padding: 0 0.4rem;
   color: var(--w1);
   border-left: 3px solid var(--d3w);
+  -ms-word-break: break-all;
+  word-break: break-all;
 }
 .messageTabs > ul > li:hover {
   border-left: 3px solid var(--p1w);
