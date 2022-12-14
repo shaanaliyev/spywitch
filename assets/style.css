@@ -226,6 +226,25 @@ body {
 }
 /* ----------- */
 /* Page: Setup */
+.a-notice {
+  background-color: var(--p1);
+  color: var(--w0);
+  padding: 0.2rem 0.5rem 0.6rem 0.5rem;
+  overflow: auto;
+  border-radius: 5px;
+}
+.a-notice > span {
+  width: 100%;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+.a-notice > ol {
+  margin: -0.5rem 0 0 0;
+}
+.a-notice b {
+  font-weight: 500;
+}
+/*  */
 .a-setup {
   display: none;
 }

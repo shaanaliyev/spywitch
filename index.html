@@ -44,6 +44,26 @@
         <!-- Setup Page -->
         <div page="#setup" class="page">
           <div class="section">
+            <div class="area a-notice">
+              <span>Notice:</span>
+              <ol>
+                <li>
+                  This application accesses data using Twitch official APIs. To use the Twitch APIs, some preliminary steps are
+                  required.
+                </li>
+                <li>The app only requests <b>"View live stream chat messages"</b> permission when accessing your account.</li>
+                <li>
+                  After the connection is established, <b>username</b>, <b>clientID</b> and <b>Oauth key</b> information:
+                  <ul>
+                    <li><b>Remember me OFF:</b> stored in variables. And they are deleted when the page is refreshed.</li>
+                    <li>
+                      <b>Remember me ON:</b> stored in your browser's local storage. And they remain there unless you revoke the
+                      access.
+                    </li>
+                  </ul>
+                </li>
+              </ol>
+            </div>
             <span class="s-title">Twitch</span>
             <div class="area a-setup active" id="a-setup">
               <label for="clientId" class="label">Twitch App Client ID:</label>
