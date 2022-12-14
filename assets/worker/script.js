@@ -81,7 +81,6 @@ export const spy = async (mode, secret, userList, channelList, logger, dataFille
         return all;
       }, []);
       // auth & join:
-      console.log(listChunks);
       ws.send('PASS oauth:' + secret.oauth);
       ws.send('NICK ' + secret.nick);
       for (const chunk of listChunks) {

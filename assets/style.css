@@ -74,6 +74,11 @@ body {
   cursor: pointer;
   margin: 0 0 0 1rem;
   transform: rotate(-10deg);
+  transition: 0.2s ease;
+}
+.head > img:hover {
+  transform: rotate(20deg);
+  transition: 0.2s ease;
 }
 .head > h1 {
   font-size: 1.3rem;
