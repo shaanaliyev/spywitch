@@ -30,7 +30,7 @@
   --d3: #333333;
   --d3w: #5f5f5f;
   --r1: #ff7070;
-  --p1: #a970ff;
+  --p1: #9b58ff;
   --p1w: #b27eff;
 }
 html,
@@ -98,7 +98,7 @@ body {
 /* ---------------- */
 /* Main */
 .main {
-  margin: 1rem 0 0 0;
+  margin: 1rem 0 2rem 0;
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
@@ -379,7 +379,7 @@ body {
   margin: 0.3rem 0 0 0;
 }
 .a-docs > ol a {
-  color: var(--p1);
+  color: var(--p1w);
 }
 .a-docs > ol b {
   color: var(--r1);
@@ -550,7 +550,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  max-height: 4.5rem;
+  max-height: 9rem;
   overflow-y: auto;
 }
 .statusList > span {
@@ -634,4 +634,23 @@ body {
 .messageTabs > ul > li:hover {
   border-left: 3px solid var(--p1w);
   background-color: var(--d3w);
+}
+
+/* ---------- */
+/* Page About */
+.a-about {
+  color: var(--w2);
+  text-align: center;
+}
+.a-about h3 {
+  width: 100%;
+}
+.a-about > p {
+  width: 100%;
+  margin: 0;
+}
+.a-about > a {
+  width: 100%;
+  color: var(--p1w);
+  text-decoration: none;
 }
