@@ -33,38 +33,28 @@ const chat = ({ user, channel, message }) => {
 };
 
 // --------------------------
-// FILL DATA:
-const dataFiller = (data) => {
+// FILL STATUS:
+const statusFiller = (data) => {
   const indicator = document.getElementById('indicator');
   const userListElement = document.getElementById('userList');
   const channelListElement = document.getElementById('channelList');
   // ON:
   if (data?.users && data?.channels) {
-    // users:
+    // SPY/ status users:
+    userListElement.innerHTML = '';
     data.users.forEach((user) => {
-      // SPY/ status:
       const item = document.createElement('span');
       item.innerHTML = user;
       userListElement.append(item);
-      // WATCH/ tabs:
-      const userTabs = document.createElement('span');
-      userTabs.setAttribute('id', 'u_' + user);
-      userTabs.innerText = user;
-      document.getElementById('userTabs').append(userTabs);
-      //  Watch/ messages
-      const messagesTab = document.createElement('ul');
-      messagesTab.setAttribute('tab', 'u_' + user);
-      document.getElementById('messageTabs').append(messagesTab);
     });
-    // channels:
+    _statusTitle(0, true);
+    // SPY/ status channels:
+    channelListElement.innerHTML = '';
     data.channels.forEach((channel) => {
-      // SPY/ status:
       const item = document.createElement('span');
       item.innerHTML = channel;
       channelListElement.append(item);
     });
-    // SPY/ status:
-    _statusTitle(0, true);
     _statusTitle(1, true);
     // indicator:
     indicator.classList.add('active');
@@ -82,15 +72,6 @@ const dataFiller = (data) => {
     indicator.innerText = 'Not Activated';
     document.getElementById('uStatus').innerHTML = 0;
     document.getElementById('cStatus').innerHTML = 0;
-    // WATCH/ userTabs:
-    document.getElementById('userTabs').innerHTML = '';
-    // WATCH/ messageTabs:
-    document.getElementById('messageTabs').innerHTML = '';
-    document.getElementById('messagesFrom').innerText = '';
-    // UI - btn:
-    const theBtn = document.getElementById('spyBtn');
-    theBtn.classList.remove('on');
-    theBtn.innerHTML = 'Start';
   }
 };
 // UI/ show-hide status titles (idk why I split this as a separate function xd):
@@ -104,6 +85,39 @@ const _statusTitle = (idx, state) => {
 };
 
 // --------------------------
+// FILL DATA:
+const dataFiller = (data) => {
+  // ON:
+  if (data?.users) {
+    // users:
+    data.users.forEach((user) => {
+      // WATCH/ tabs:
+      const userTabs = document.createElement('span');
+      userTabs.setAttribute('id', 'u_' + user);
+      userTabs.innerText = user;
+      document.getElementById('userTabs').append(userTabs);
+      //  WATCH/ messages
+      const messagesTab = document.createElement('ul');
+      messagesTab.setAttribute('tab', 'u_' + user);
+      document.getElementById('messageTabs').append(messagesTab);
+    });
+  }
+  // OFF:
+  else {
+    // WATCH/ userTabs:
+    document.getElementById('userTabs').innerHTML = '';
+    // WATCH/ messageTabs:
+    document.getElementById('messageTabs').innerHTML = '';
+    // WATCH/ message from:
+    document.getElementById('messagesFrom').innerText = '';
+    // UI - btn:
+    const theBtn = document.getElementById('spyBtn');
+    theBtn.classList.remove('on');
+    theBtn.innerHTML = 'Start';
+  }
+};
+
+// --------------------------
 // STARTER:
 const start = (e) => {
   // start btn:
@@ -111,7 +125,7 @@ const start = (e) => {
 
   // CHECK 1/ if already active:
   if (theBtn.classList.contains('on')) {
-    spyStop(logger, dataFiller);
+    spyStop(logger, statusFiller, dataFiller);
     return;
   }
 
@@ -178,13 +192,23 @@ const start = (e) => {
       _filterInputs(usernamesElement.value),
       _filterInputs(channelsElement.value),
       logger,
+      statusFiller,
       dataFiller,
       chat
     );
   }
   // auto mode:
   else {
-    spy('auto', { clientId: CID, oauth: TKN, nick: ACC }, _filterInputs(usernamesElement.value), null, logger, dataFiller, chat);
+    spy(
+      'auto',
+      { clientId: CID, oauth: TKN, nick: ACC },
+      _filterInputs(usernamesElement.value),
+      null,
+      logger,
+      statusFiller,
+      dataFiller,
+      chat
+    );
   }
 };
 

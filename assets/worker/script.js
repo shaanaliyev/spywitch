@@ -5,7 +5,7 @@ import { sleep, messageParser } from './helpers.js';
 let ws = null;
 // --------------------------
 // SPY:
-export const spy = async (mode, secret, userList, channelList, logger, dataFiller, chat) => {
+export const spy = async (mode, secret, userList, channelList, logger, statusFiller, dataFiller, chat) => {
   // Twitch Services:
   const twitch = new twServices(secret);
   // data to fill by using dataFiller:
@@ -30,25 +30,27 @@ export const spy = async (mode, secret, userList, channelList, logger, dataFille
     }
 
     // AUTO MODE:
+    let followingChannels = null;
+    let cList = null;
     if (mode === 'auto') {
       if (!error && ws) {
         // #2: followingInfo
         logger('Following data...');
-        const following = await twitch.followingInfo(users.data.ids);
-        if (!following.status) {
-          logger('<error>✕ ' + following.message + '</error>');
+        followingChannels = await twitch.followingInfo(users.data.ids);
+        if (!followingChannels.status) {
+          logger('<error>✕ ' + followingChannels.message + '</error>');
           error = true;
         } else if (ws) {
-          logger('<success>✓</success> Channels: <b>' + following.data.length + '</b>');
+          logger('<success>✓</success> Channels: <b>' + followingChannels.data.length + '</b>');
           // #3: followingInfo
           logger('Live channels data...');
-          const liveChannels = await twitch.liveInfo(following.data);
-          if (!liveChannels.status) {
-            logger('<error>✕ ' + liveChannels.message + '</error>');
+          cList = await twitch.liveInfo(followingChannels.data);
+          if (!cList.status) {
+            logger('<error>✕ ' + cList.message + '</error>');
             error = true;
           } else if (ws) {
-            logger('<success>✓</success> Channels: <b>' + liveChannels.data.length + '</b>');
-            dataToFill = { ...dataToFill, channels: liveChannels.data };
+            logger('<success>✓</success> Channels: <b>' + cList.data.length + '</b>');
+            dataToFill = { ...dataToFill, channels: cList.data };
           }
         }
       }
@@ -72,40 +74,16 @@ export const spy = async (mode, secret, userList, channelList, logger, dataFille
     // JOIN & SPY:
     if (!error && ws) {
       // =====
-      // JOIN:
-      logger('Joining...');
-      // join list maker (chunked): [In order not to exceed the rate limit => 15 joins per 11 seconds]
-      const listChunks = dataToFill.channels.reduce((all, one, i) => {
-        const ch = Math.floor(i / 15);
-        all[ch] = [].concat(all[ch] || [], '#' + one).join(',');
-        return all;
-      }, []);
-      // auth & join:
+      // AUTH:
       ws.send('PASS oauth:' + secret.oauth);
       ws.send('NICK ' + secret.nick);
-      for (const chunk of listChunks) {
-        if (!ws) break;
-        // join
-        ws.send('JOIN ' + chunk);
-        // show joined channels:
-        logger(
-          chunk
-            .substring(1)
-            .split(',#')
-            .map((channel) => {
-              return '<channel>' + channel + '</channel>';
-            })
-            .join(', ')
-        );
-        if (listChunks.length > 1) {
-          await sleep(11000);
-        }
-      }
+      // JOIN:
+      logger('Joining...');
+      await _join(ws, dataToFill.channels, logger);
       // =====
       // SPY:
       if (ws) {
-        logger('<success>Joined Successfully</success>');
-        ws.onmessage = (message) => {
+        ws.onmessage = async (message) => {
           const response = messageParser(message);
           // if has messages
           if (response.status) {
@@ -116,28 +94,80 @@ export const spy = async (mode, secret, userList, channelList, logger, dataFille
             }
           } else if (response.message === 'keepalive') {
             ws.send('PONG');
+            // =====
+            // update live channels list:
+            if (followingChannels) {
+              // check all channels for live status:
+              const newCList = await twitch.liveInfo(followingChannels.data);
+              if (newCList.status && ws) {
+                // find the difference between last live channels and new live channels:
+                const difference = newCList.data.filter((x) => !cList.data.includes(x));
+                if (difference.length) {
+                  // join to the new found channels:
+                  await _join(ws, difference, logger);
+                  // update the live channels list:
+                  cList.data = cList.data.concat(difference);
+                  // update dataToFill:
+                  dataToFill = { ...dataToFill, channels: cList.data };
+                  // change indicator channels count:
+                  document.getElementById('cStatus').innerHTML = dataToFill.channels.length;
+                  // fill data:
+                  statusFiller(dataToFill);
+                }
+              }
+            }
           }
         };
         // FILL DATA:
         document.getElementById('uStatus').innerHTML = dataToFill.users.length;
         document.getElementById('cStatus').innerHTML = dataToFill.channels.length;
+        statusFiller(dataToFill);
         dataFiller(dataToFill);
       }
     }
   };
 
   if (error) {
-    spyStop(logger, dataFiller);
+    spyStop(logger, statusFiller, dataFiller);
+  }
+};
+
+// Join channels:
+const _join = async (ws, channels, logger) => {
+  // join list maker (chunked): [In order not to exceed the rate limit => 15 joins per 11 seconds]
+  const listChunks = channels.reduce((all, one, i) => {
+    const ch = Math.floor(i / 15);
+    all[ch] = [].concat(all[ch] || [], '#' + one).join(',');
+    return all;
+  }, []);
+  for (const chunk of listChunks) {
+    if (!ws) break;
+    // join
+    ws.send('JOIN ' + chunk);
+    // show joined channels:
+    logger(
+      chunk
+        .substring(1)
+        .split(',#')
+        .map((channel) => {
+          return '<channel>' + channel + '</channel>';
+        })
+        .join(', ')
+    );
+    if (listChunks.length > 1) {
+      await sleep(11000);
+    }
   }
 };
 
 // --------------------------
 // SPY STOP:
-export const spyStop = (logger, dataFiller) => {
+export const spyStop = (logger, statusFiller, dataFiller) => {
   if (ws) {
     ws.close();
   }
   logger('Disconnected!');
+  statusFiller();
   dataFiller();
   ws = null;
 };
