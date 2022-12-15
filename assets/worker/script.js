@@ -125,11 +125,10 @@ export const spy = async (mode, secret, userList, channelList, logger, statusFil
         dataFiller(dataToFill);
       }
     }
+    if (error) {
+      spyStop(logger, statusFiller, dataFiller);
+    }
   };
-
-  if (error) {
-    spyStop(logger, statusFiller, dataFiller);
-  }
 };
 
 // Join channels:
