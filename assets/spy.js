@@ -1,4 +1,4 @@
-import { spy, spyStop } from './worker/script.js';
+import { spy, spyStop } from './worker/script.js?v=1';
 import { time, keepScroll } from './worker/helpers.js';
 
 // --------------------------

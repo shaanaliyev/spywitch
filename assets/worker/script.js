@@ -101,7 +101,13 @@ export const spy = async (mode, secret, userList, channelList, logger, statusFil
               const newCList = await twitch.liveInfo(followingChannels.data);
               if (newCList.status && ws) {
                 // find the difference between last live channels and new live channels:
-                const difference = newCList.data.filter((x) => !cList.data.includes(x));
+                const seen = new Set(cList.data);
+                let difference = [];
+                for (const c of newCList.data) {
+                  if (!seen.has(c)) {
+                    difference.push(c);
+                  }
+                }
                 if (difference.length) {
                   // join to the new found channels:
                   await _join(ws, difference, logger);
